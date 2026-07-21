@@ -59,20 +59,13 @@ RUN chmod +x /app/start.sh \
     && chmod +x /app/rebecca-cli
 
 
-RUN useradd -m -u 1000 rebecca \
-    && chown -R rebecca:rebecca /app
+RUN chown -R 1000:1000 /app
 
-
-USER rebecca
+USER 1000
 
 
 EXPOSE 8080
 
-
-HEALTHCHECK --interval=30s \
---timeout=5s \
---start-period=40s \
---retries=5 \
 CMD curl -fsS http://127.0.0.1:${PORT}/ || exit 1
 
 
