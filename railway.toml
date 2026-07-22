@@ -1,0 +1,32 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+healthcheckPath = "/api/health"
+healthcheckTimeout = 10
+
+[service]
+internalPort = 8080
+
+[[service.variables]]
+key = "TUNNEL_AUTH_KEY"
+value = ""
+
+[[service.variables]]
+key = "DOMAIN"
+value = ""
+
+[[service.variables]]
+key = "MAX_CONNECTIONS"
+value = "100"
+
+[[service.variables]]
+key = "ENABLE_TCP"
+value = "true"
+
+[[service.variables]]
+key = "ENABLE_UDP"
+value = "true"

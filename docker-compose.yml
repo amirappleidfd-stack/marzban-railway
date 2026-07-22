@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  tunnel-panel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mhrv-tunnel-panel
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DB_PATH=/app/data/tunnel.db
+      - TUNNEL_AUTH_KEY=${TUNNEL_AUTH_KEY:-}
+      - DOMAIN=${DOMAIN:-}
+      - MAX_CONNECTIONS=${MAX_CONNECTIONS:-100}
+      - ENABLE_TCP=${ENABLE_TCP:-true}
+      - ENABLE_UDP=${ENABLE_UDP:-true}
+    volumes:
+      - tunnel_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/health') || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  tunnel_data:
+    driver: local
